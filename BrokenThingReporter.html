@@ -79,26 +79,33 @@
     function submitForm() {
       var filename = document.getElementById("filename").value;
       var username = document.getElementById("username").value;
-      var issue = document.getElementById("issue").value; // Get the value from the textarea
-
+      var issue = document.getElementById("issue").value;
+  
+      // Check if all fields are filled out
+      if (!filename || !username || !issue) {
+        alert("Please fill out all fields.");
+        return;
+      }
+  
       // Clear input fields
       document.getElementById("filename").value = "";
       document.getElementById("username").value = "";
-      document.getElementById("issue").value = ""; // Clear the textarea
-
+      document.getElementById("issue").value = "";
+  
       // Send data to Discord webhook
       var data = {
-        "content": "The user " + username + " has reported the file " + filename + " is broken and needs to be fixed. Issue description: " + issue // Include the issue description in the message
+        "content": "The user " + username + " has reported the file " + filename + " is broken and needs to be fixed. Issue description: " + issue
       };
-
+  
       var encodedWebhookUrl = "aHR0cHM6Ly9ldmVudHMuaG9va2RlY2suY29tL2Uvc3JjX3ZOUXBKZmVpb2o5dQ==";
       var decodedWebhookUrl = atob(encodedWebhookUrl);
-
+  
       var xhr = new XMLHttpRequest();
       xhr.open("POST", decodedWebhookUrl, true);
       xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhr.send(JSON.stringify(data));
     }
   </script>
+  
 </body>
 </html>

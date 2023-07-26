@@ -55,6 +55,8 @@
 <body>
   <!-- Content -->
   <div class="content">
+  <!-- Content -->
+  <div class="content">
     <!-- Broken Torrent Form -->
     <div>
       <label for="filename">Enter the name of the thing you want to add:</label>
@@ -74,6 +76,12 @@
       var filename = document.getElementById("filename").value;
       var username = document.getElementById("username").value;
 
+      // Check if all fields are filled out
+      if (!filename || !username) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
       // Clear input fields
       document.getElementById("filename").value = "";
       document.getElementById("username").value = "";
@@ -92,5 +100,5 @@
       xhr.send(JSON.stringify(data));
     }
   </script>
-</body>
+  </body>
 </html>
