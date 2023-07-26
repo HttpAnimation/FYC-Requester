@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FYC</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      color: white;
+      background-color: #252525;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .content {
+      max-width: 400px;
+      width: 100%;
+      padding: 20px;
+      background-color: #363636;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #555;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background-color: #555;
+      color: white;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0069d9;
+    }
+  </style>
+</head>
+<body>
+  <!-- Content -->
+  <div class="content">
+    <!-- Broken Torrent Form -->
+    <div>
+      <label for="filename">Enter the name of the broken file:</label>
+      <input type="text" id="filename" name="filename">
+    </div>
+    <br>
+    <div>
+      <label for="username">Your Name:</label>
+      <input type="text" id="username" name="username">
+    </div>
+    <!-- Box to describe the issue -->
+    <div>
+      <label for="issue">Describe the issue:</label>
+      <textarea id="issue" name="issue" rows="4" placeholder="Please describe the issue..."></textarea>
+    </div>
+    <button onclick="submitForm()">Submit</button>
+  </div>
+
+  <script>
+    function submitForm() {
+      var filename = document.getElementById("filename").value;
+      var username = document.getElementById("username").value;
+      var issue = document.getElementById("issue").value; // Get the value from the textarea
+
+      // Clear input fields
+      document.getElementById("filename").value = "";
+      document.getElementById("username").value = "";
+      document.getElementById("issue").value = ""; // Clear the textarea
+
+      // Send data to Discord webhook
+      var data = {
+        "content": "The user " + username + " has reported the file " + filename + " is broken and needs to be fixed. Issue description: " + issue // Include the issue description in the message
+      };
+
+      var encodedWebhookUrl = "aHR0cHM6Ly9ldmVudHMuaG9va2RlY2suY29tL2Uvc3JjX3ZOUXBKZmVpb2o5dQ==";
+      var decodedWebhookUrl = atob(encodedWebhookUrl);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", decodedWebhookUrl, true);
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.send(JSON.stringify(data));
+    }
+  </script>
+</body>
+</html>
