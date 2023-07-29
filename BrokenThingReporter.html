@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Request New Torrent</title>
+  <title>Request broken Torrent</title>
   <style>
     body {
       color: #ffffff;
@@ -97,7 +97,7 @@
         <input type="text" id="torrentname" name="torrentname" required>
       </div>
       <div class="input-container">
-        <label for="requester">Your Name:</label>
+        <label for="requester">Your Discord user Name:</label>
         <input type="text" id="requester" name="requester" required>
       </div>
       <!-- Box to describe the request -->
@@ -106,34 +106,39 @@
         <textarea id="description" name="description" rows="4" placeholder="Please describe the request..." required></textarea>
       </div>
       <button type="submit">Submit</button>
-    </form>
+        </form>
     <a href="index.html" class="back-button">Go home</a>
   </div>
 
   <script>
     function submitForm() {
-      var filename = document.getElementById("filename").value;
-      var username = document.getElementById("username").value;
-      var issue = document.getElementById("issue").value; // Get the value from the textarea
+      var filename = document.getElementById("torrentname").value;
+      var username = document.getElementById("requester").value;
+      var issue = document.getElementById("description").value; // Get the value from the textarea
 
       // Clear input fields
-      document.getElementById("filename").value = "";
-      document.getElementById("username").value = "";
-      document.getElementById("issue").value = ""; // Clear the textarea
+      document.getElementById("torrentname").value = "";
+      document.getElementById("requester").value = "";
+      document.getElementById("description").value = ""; // Clear the textarea
 
       // Send data to Discord webhook
       var data = {
         "content": "The user " + username + " has reported the file " + filename + " is broken and needs to be fixed. Issue description: " + issue // Include the issue description in the message
       };
 
-      var encodedWebhookUrl = "aHR0cHM6Ly9ldmVudHMuaG9va2RlY2suY29tL2Uvc3JjX3ZOUXBKZmVpb2o5dQ==";
-      var decodedWebhookUrl = atob(encodedWebhookUrl);
+      var webhookURL = "https://discord.com/api/webhooks/1134696304228958228/8YiznKL1GDTXmNAe_7_MAgUtohJscbno-gcj3Z4p9Bh8ezuIicaYL88KSNxBBGgZzzEM";
 
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", decodedWebhookUrl, true);
+      xhr.open("POST", webhookURL, true);
       xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhr.send(JSON.stringify(data));
     }
+
+    // Attach form submission event listener
+    document.getElementById("requestForm").addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent form submission
+      submitForm(); // Call the function to handle form submission
+    });
   </script>
-</body>
+  </body>
 </html>

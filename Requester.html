@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Report Broken Torrent</title>
+  <title>Request broken Torrent</title>
   <style>
     body {
       color: #ffffff;
@@ -90,20 +90,20 @@
 <body>
   <!-- Content -->
   <div class="content">
-    <!-- Broken Torrent Form -->
-    <form id="reportForm">
+    <!-- Request New Torrent Form -->
+    <form id="requestForm">
       <div class="input-container">
-        <label for="filename">Enter the name of the broken file:</label>
-        <input type="text" id="filename" name="filename" required>
+        <label for="torrentname">Enter the name of the requested torrent:</label>
+        <input type="text" id="torrentname" name="torrentname" required>
       </div>
       <div class="input-container">
-        <label for="username">Your Name:</label>
-        <input type="text" id="username" name="username" required>
+        <label for="requester">Your Discord user Name:</label>
+        <input type="text" id="requester" name="requester" required>
       </div>
-      <!-- Box to describe the issue -->
+      <!-- Box to describe the request -->
       <div class="input-container">
-        <label for="issue">Describe the issue:</label>
-        <textarea id="issue" name="issue" rows="4" placeholder="Please describe the issue..." required></textarea>
+        <label for="description">Describe the request:</label>
+        <textarea id="description" name="description" rows="4" placeholder="Please describe the request..." required></textarea>
       </div>
       <button type="submit">Submit</button>
     </form>
@@ -112,25 +112,33 @@
 
   <script>
     function submitForm() {
-      var filename = document.getElementById("filename").value;
-      var username = document.getElementById("username").value;
+      var filename = document.getElementById("torrentname").value;
+      var username = document.getElementById("requester").value;
+      var issue = document.getElementById("description").value; // Get the value from the textarea
 
       // Clear input fields
-      document.getElementById("filename").value = "";
-      document.getElementById("username").value = "";
+      document.getElementById("torrentname").value = "";
+      document.getElementById("requester").value = "";
+      document.getElementById("description").value = ""; // Clear the textarea
 
       // Send data to Discord webhook
       var data = {
-        "content": "Someone requested that " + filename + " should be added the type of thing is a " + username + ""
+        "content": "The user " + username + " has reported the file " + filename + " is broken and needs to be fixed. Issue description: " + issue // Include the issue description in the message
       };
 
-      var encodedWebhookUrl = "aHR0cHM6Ly9ldmVudHMuaG9va2RlY2suY29tL2Uvc3JjX2xHT2s5OThNeXNMeQ==";
-      var decodedWebhookUrl = atob(encodedWebhookUrl);
+      var webhookURL = "https://discord.com/api/webhooks/1134698664854556804/4EE3lMo_LNZBtcm-KBC6BoWhLVF8ksuIGD8kaYiB6gdb2yHZfh_F95gp3h-p2NbOwWJL";
 
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", decodedWebhookUrl, true);
+      xhr.open("POST", webhookURL, true);
       xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhr.send(JSON.stringify(data));
-    }  </script>
+    }
+
+    // Attach form submission event listener
+    document.getElementById("requestForm").addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent form submission
+      submitForm(); // Call the function to handle form submission
+    });
+  </script>
 </body>
 </html>
